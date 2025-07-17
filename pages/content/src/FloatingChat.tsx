@@ -93,73 +93,71 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({ activationButtonPosi
   const animationClass = isRightSide ? 'slide-from-right' : 'slide-from-left';
 
   return createPortal(
-    <div className={`floating-chat-container ${isOpen ? 'open' : ''} ${animationClass}`} ref={chatRef}>
-      <div className="floating-chat-glass-panel">
-        <div className="floating-chat-header">
-          <h3>Assistant</h3>
-          <button className="close-button" onClick={handleClose}>
-            ×
+    <div className={`floating-chat-glass-panel ${isOpen ? 'open' : ''} ${animationClass}`} ref={chatRef}>
+      <div className="floating-chat-header">
+        <h3>Assistant</h3>
+        <button className="close-button" onClick={handleClose}>
+          ×
+        </button>
+      </div>
+
+      <div className="floating-chat-messages">
+        <div className="messages-scroll-container">
+          {messages.map(message => (
+            <div key={message.id} className={`message-bubble ${message.sender}`}>
+              <div className="message-glass-backing">{message.text}</div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      <div className="floating-chat-input-container">
+        {selectedTools.size > 0 && (
+          <div className="selected-tools-display">
+            {Array.from(selectedTools).map(toolId => {
+              const tool = tools.find(t => t.id === toolId);
+              return tool ? (
+                <span key={toolId} className="selected-tool-chip">
+                  {tool.icon} {tool.label}
+                </span>
+              ) : null;
+            })}
+          </div>
+        )}
+
+        <div className="input-row">
+          <button className="tools-toggle-button" onClick={() => setShowTools(!showTools)}>
+            +
+          </button>
+
+          <textarea
+            className="chat-input"
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Type a message..."
+            rows={1}
+          />
+
+          <button className="send-button" onClick={handleSendMessage} disabled={!inputValue.trim()}>
+            Send
           </button>
         </div>
 
-        <div className="floating-chat-messages">
-          <div className="messages-scroll-container">
-            {messages.map(message => (
-              <div key={message.id} className={`message-bubble ${message.sender}`}>
-                <div className="message-glass-backing">{message.text}</div>
-              </div>
+        {showTools && (
+          <div className="tools-popup">
+            {tools.map(tool => (
+              <button
+                key={tool.id}
+                className={`tool-button ${selectedTools.has(tool.id) ? 'selected' : ''}`}
+                onClick={() => toggleTool(tool.id)}>
+                <span className="tool-icon">{tool.icon}</span>
+                <span className="tool-label">{tool.label}</span>
+              </button>
             ))}
-            <div ref={messagesEndRef} />
           </div>
-        </div>
-
-        <div className="floating-chat-input-container">
-          {selectedTools.size > 0 && (
-            <div className="selected-tools-display">
-              {Array.from(selectedTools).map(toolId => {
-                const tool = tools.find(t => t.id === toolId);
-                return tool ? (
-                  <span key={toolId} className="selected-tool-chip">
-                    {tool.icon} {tool.label}
-                  </span>
-                ) : null;
-              })}
-            </div>
-          )}
-
-          <div className="input-row">
-            <button className="tools-toggle-button" onClick={() => setShowTools(!showTools)}>
-              +
-            </button>
-
-            <textarea
-              className="chat-input"
-              value={inputValue}
-              onChange={e => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type a message..."
-              rows={1}
-            />
-
-            <button className="send-button" onClick={handleSendMessage} disabled={!inputValue.trim()}>
-              Send
-            </button>
-          </div>
-
-          {showTools && (
-            <div className="tools-popup">
-              {tools.map(tool => (
-                <button
-                  key={tool.id}
-                  className={`tool-button ${selectedTools.has(tool.id) ? 'selected' : ''}`}
-                  onClick={() => toggleTool(tool.id)}>
-                  <span className="tool-icon">{tool.icon}</span>
-                  <span className="tool-label">{tool.label}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>,
     document.body,
