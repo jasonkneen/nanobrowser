@@ -89,6 +89,7 @@ const manifest = withOperaSidebar(
           'icon-32.png',
           'permission/index.html',
           'permission/permission.js',
+          'content/FloatingChat.css',
         ],
         matches: ['*://*/*'],
       },
