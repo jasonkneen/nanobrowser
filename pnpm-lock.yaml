@@ -328,6 +328,12 @@ importers:
       '@extension/storage':
         specifier: workspace:*
         version: link:../../packages/storage
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
     devDependencies:
       '@extension/hmr':
         specifier: workspace:*
@@ -338,6 +344,12 @@ importers:
       '@extension/vite-config':
         specifier: workspace:*
         version: link:../../packages/vite-config
+      '@types/react':
+        specifier: ^18.3.23
+        version: 18.3.23
+      '@types/react-dom':
+        specifier: ^18.3.7
+        version: 18.3.7(@types/react@18.3.23)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3

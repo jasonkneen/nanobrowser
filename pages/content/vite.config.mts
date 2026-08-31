@@ -20,6 +20,16 @@ export default withPageConfig({
       name: 'ContentScript',
       fileName: 'index',
     },
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'FloatingChat.css') {
+            return 'FloatingChat.css';
+          }
+          return '[name][extname]';
+        },
+      },
+    },
     outDir: resolve(rootDir, '..', '..', 'dist', 'content'),
   },
 });
